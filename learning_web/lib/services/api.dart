@@ -41,7 +41,8 @@ class Api {
               products.add(Product(
                   name: value['pname'],
                   desc: value['pdesc'],
-                  price: value['pprice']))
+                  price: value['pprice'],
+                  id: value['id'].toString()))
             });
 
         // debugPrint(data);  //this line causes fatal error
@@ -53,6 +54,32 @@ class Api {
       }
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  //update put method
+  static updateProduct(id, body) async {
+    var url = Uri.parse("${baseUrl}update/$id");
+
+    final res = await http.post(url, body: body);
+
+    if (res.statusCode == 200) {
+      print(jsonDecode(res.body));
+    } else {
+      print("Failed to update data");
+    }
+  }
+
+  //delete
+  static deleteProduct(id) async {
+    var url = Uri.parse("${baseUrl}delete/$id");
+
+    final res = await http.post(url);
+
+    if (res.statusCode == 204) {
+      print(jsonDecode(res.body));
+    } else {
+      print("Failed to delete data");
     }
   }
 }
